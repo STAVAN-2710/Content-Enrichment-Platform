@@ -6,13 +6,25 @@ dist/
 wheels/
 *.egg-info
 
-
 # Virtual environments
 .venv
-content_enrichment_platform.md
 
+# Secrets
+.env
 
+# Data files (large, not versioned — regenerate via uv run python -m src.ingestion.ingest)
+data/raw/
+data/processed/
+data/enriched/
+data/embeddings/
+
+# Pipeline runtime artifacts
+data/checkpointer.db
+data/dead_letter.jsonl
+
+# Tooling
 .codegraph
 .cursor
 .claudeignore
+content_enrichment_platform.md
 
