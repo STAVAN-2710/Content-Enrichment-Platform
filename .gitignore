@@ -1,0 +1,18 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+
+# Virtual environments
+.venv
+content_enrichment_platform.md
+
+
+.codegraph
+.cursor
+.claudeignore
+
