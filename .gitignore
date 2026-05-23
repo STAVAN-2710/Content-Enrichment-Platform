@@ -25,6 +25,17 @@ data/dead_letter.jsonl
 # Tooling
 .codegraph
 .cursor
+.claude/
 .claudeignore
 content_enrichment_platform.md
+graphify-out/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Ephemeral task/planning files
+tasks/
 
