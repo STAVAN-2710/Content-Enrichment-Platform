@@ -38,7 +38,7 @@ SHOW_VERTICAL: dict[str, str] = {
     "Dan Carlin's Hardcore History": "history",
     "Huberman Lab": "health",
     "The Art of Manliness": "health",
-    "Conan O'Brien Needs A Friend": "comedy",
+    "Conan O’Brien Needs A Friend": "comedy",
     "The Daily": "culture",
     "The Dan Bongino Show": "culture",
     "The Joe Rogan Experience": "culture",
@@ -58,15 +58,15 @@ PILOT_TARGETS: dict[str, int] = {
 }
 
 FULL_TARGETS: dict[str, int] = {
-    "technology": 18,
-    "science": 18,
-    "business": 18,
-    "history": 15,
+    "technology": 22,
+    "science": 22,
+    "business": 22,
+    "history": 18,
     "true_crime": 10,
-    "health": 15,
+    "health": 18,
     "comedy": 12,
-    "culture": 15,
-    # Remaining ~29 episodes drawn proportionally from cross-vertical shows
+    "culture": 26,
+    # Total: 150
 }
 
 

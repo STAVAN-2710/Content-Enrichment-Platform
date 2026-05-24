@@ -97,16 +97,20 @@ A guest can be energetic while discussing an intense topic. Judge the delivery, 
 Pick from this taxonomy:
 
 ```
-Technology: artificial_intelligence, software_engineering, cybersecurity, hardware, startups_and_vc, data_science
-Science: neuroscience, physics, biology, medicine, astronomy, climate_and_environment
-Business: entrepreneurship, investing, marketing, leadership, economics, productivity
-History: ancient_history, modern_history, military_history, political_history, cultural_history
-True Crime: cybercrime, true_crime
-Health: nutrition, fitness, mental_health, sleep, longevity
-Philosophy: ethics, philosophy_of_mind, spirituality
-Comedy: comedy, satire
+Technology:   artificial_intelligence, software_engineering, cybersecurity, hardware, startups_and_vc, data_science,
+              surveillance_and_privacy
+Science:      neuroscience, physics, biology, medicine, astronomy, climate_and_environment,
+              mathematics, planetary_science, paleontology
+Business:     entrepreneurship, investing, marketing, leadership, economics, productivity
+History:      ancient_history, modern_history, military_history, political_history, cultural_history,
+              mythology
+True Crime:   cybercrime, true_crime
+Health:       nutrition, fitness, mental_health, sleep, longevity
+Philosophy:   ethics, philosophy_of_mind, spirituality
+Comedy:       comedy, satire
 Personal Dev: relationships, personal_finance, career, habits_and_mindset
-Culture: politics, media_and_journalism, social_issues, sports, arts_and_entertainment
+Culture:      politics, media_and_journalism, social_issues, sports, arts_and_entertainment,
+              political_commentary
 ```
 
 **Decision rules:**
@@ -116,6 +120,12 @@ Culture: politics, media_and_journalism, social_issues, sports, arts_and_enterta
 - **Cross-vertical episodes:** Pick the topic the *host frames the episode around*. Clues: the episode title, the first sentence of the description, and any explicit "today we discuss X" language.
 - `startups_and_vc` vs `entrepreneurship`: Use `startups_and_vc` when the episode is explicitly about the startup ecosystem, venture funding rounds, or VC dynamics. Use `entrepreneurship` when it's about building a business more generally (including non-tech businesses).
 - `true_crime` vs `cybercrime`: If a crime episode is specifically about a hack, data breach, or tech-based fraud, use `cybercrime`. Use `true_crime` for non-tech crimes.
+- `cybersecurity` vs `surveillance_and_privacy`: `cybersecurity` = hacking, defense, vulnerabilities, security engineering. `surveillance_and_privacy` = who is watching whom, data collection by governments/corporations, digital privacy rights. Can co-occur.
+- `politics` vs `political_commentary`: `politics` = policy analysis, elections, legislation, governance, neutral or journalistic framing. `political_commentary` = explicitly partisan opinion, punditry, editorial framing, host expressing strong political views. Dan Bongino = `political_commentary`; The Daily = `politics`.
+- `ancient_history` vs `mythology`: `ancient_history` = documented historical events and people (wars, civilizations, rulers). `mythology` = legends, myths, folklore — stories whose truth is not asserted (Jason & Argonauts, Greek gods, creation myths). Can co-occur as primary + secondary.
+- `astronomy` vs `planetary_science`: `astronomy` = stars, galaxies, cosmology, space observation. `planetary_science` = planets, moons, Earth's geology, solar system formation, asteroid impacts. An episode about Earth's ancient water or dinosaur extinction = `planetary_science` or `paleontology`, not `astronomy`.
+- `paleontology` vs `ancient_history` vs `biology`: `paleontology` = prehistoric life (dinosaurs, fossils, mass extinctions, deep time). `ancient_history` = human history (civilizations, culture, warfare). `biology` = living organisms and processes. Dinosaur episodes = `paleontology`; Greek civilization = `ancient_history`.
+- `mathematics` vs `physics`: `mathematics` = pure math, statistics, probability, mathematical reasoning. `physics` = physical laws, forces, particles, energy. An episode where the primary content is mathematical reasoning or numerical exploration = `mathematics`.
 
 **Examples:**
 
@@ -344,16 +354,28 @@ learning         = you'd want to take notes or re-listen
 
 ### primary_topics — pick 1–3
 ```
-Technology:   artificial_intelligence, software_engineering, cybersecurity, hardware, startups_and_vc, data_science
-Science:      neuroscience, physics, biology, medicine, astronomy, climate_and_environment
+Technology:   artificial_intelligence, software_engineering, cybersecurity, hardware, startups_and_vc,
+              data_science, surveillance_and_privacy
+Science:      neuroscience, physics, biology, medicine, astronomy, climate_and_environment,
+              mathematics, planetary_science, paleontology
 Business:     entrepreneurship, investing, marketing, leadership, economics, productivity
-History:      ancient_history, modern_history, military_history, political_history, cultural_history
+History:      ancient_history, modern_history, military_history, political_history, cultural_history,
+              mythology
 True Crime:   cybercrime, true_crime
 Health:       nutrition, fitness, mental_health, sleep, longevity
 Philosophy:   ethics, philosophy_of_mind, spirituality
 Comedy:       comedy, satire
 Personal Dev: relationships, personal_finance, career, habits_and_mindset
-Culture:      politics, media_and_journalism, social_issues, sports, arts_and_entertainment
+Culture:      politics, media_and_journalism, social_issues, sports, arts_and_entertainment,
+              political_commentary
+
+KEY DISTINCTIONS (v1 additions):
+  politics vs political_commentary  → journalistic/neutral vs partisan/punditry
+  cybersecurity vs surveillance_and_privacy → defense/hacking vs who-watches-whom
+  ancient_history vs mythology → documented fact vs legend/myth
+  astronomy vs planetary_science → stars/cosmos vs planets/Earth/solar system
+  paleontology → dinosaurs/fossils/mass extinction (not ancient_history, not biology)
+  mathematics → pure math/stats/probability (not physics)
 
 CROSS-VERTICAL: What does the HOST frame as the episode's subject?
 ```

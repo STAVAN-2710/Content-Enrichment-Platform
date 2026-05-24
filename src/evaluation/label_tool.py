@@ -34,6 +34,7 @@ from src.schemas.enrichment import (
     FormatLiteral,
     EnrichmentQualityLiteral,
     LabelerConfidenceLiteral,
+    SCHEMA_VERSION,
 )
 
 GOLDEN_DIR = Path("data/golden")
@@ -52,15 +53,19 @@ MOODS = ["energetic", "calm", "intense", "melancholic", "humorous", "serious", "
 CONTEXTS = ["commute", "workout", "deep_work", "casual_listening", "cooking", "sleep", "social", "learning"]
 TOPICS = [
     "artificial_intelligence", "software_engineering", "cybersecurity", "hardware", "startups_and_vc", "data_science",
+    "surveillance_and_privacy",
     "neuroscience", "physics", "biology", "medicine", "astronomy", "climate_and_environment",
+    "mathematics", "planetary_science", "paleontology",
     "entrepreneurship", "investing", "marketing", "leadership", "economics", "productivity",
     "ancient_history", "modern_history", "military_history", "political_history", "cultural_history",
+    "mythology",
     "cybercrime", "true_crime",
     "nutrition", "fitness", "mental_health", "sleep", "longevity",
     "ethics", "philosophy_of_mind", "spirituality",
     "comedy", "satire",
     "relationships", "personal_finance", "career", "habits_and_mindset",
     "politics", "media_and_journalism", "social_issues", "sports", "arts_and_entertainment",
+    "political_commentary",
 ]
 DIFFICULTIES = ["beginner", "intermediate", "advanced"]
 FORMATS = ["interview", "solo_monologue", "panel_discussion", "narrative_storytelling", "debate", "educational_lecture"]
@@ -68,16 +73,16 @@ QUALITIES = ["high", "medium", "low"]
 CONFIDENCES = ["high", "medium", "low"]
 
 TOPIC_GROUPS = {
-    "Technology":        TOPICS[0:6],
-    "Science":           TOPICS[6:12],
-    "Business":          TOPICS[12:18],
-    "History":           TOPICS[18:23],
-    "True Crime":        TOPICS[23:25],
-    "Health":            TOPICS[25:30],
-    "Philosophy":        TOPICS[30:33],
-    "Comedy":            TOPICS[33:35],
-    "Personal Dev":      TOPICS[35:39],
-    "Culture":           TOPICS[39:],
+    "Technology":        TOPICS[0:7],    # 7 items (added surveillance_and_privacy)
+    "Science":           TOPICS[7:16],   # 9 items (added mathematics, planetary_science, paleontology)
+    "Business":          TOPICS[16:22],
+    "History":           TOPICS[22:28],  # 6 items (added mythology)
+    "True Crime":        TOPICS[28:30],
+    "Health":            TOPICS[30:35],
+    "Philosophy":        TOPICS[35:38],
+    "Comedy":            TOPICS[38:40],
+    "Personal Dev":      TOPICS[40:44],
+    "Culture":           TOPICS[44:],    # includes political_commentary at end
 }
 
 
@@ -342,7 +347,7 @@ def label_episode(ep: dict) -> dict:
         "labeler_confidence": confidence,
         "notes": notes,
         "labeled_at": datetime.now(timezone.utc).isoformat(),
-        "schema_version": 0,
+        "schema_version": SCHEMA_VERSION,
         "_sampled_vertical": ep.get("_sampled_vertical", "unknown"),
     }
 

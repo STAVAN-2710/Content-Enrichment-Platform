@@ -25,15 +25,18 @@ TopicLiteral = Literal[
     # Technology
     "artificial_intelligence", "software_engineering", "cybersecurity",
     "hardware", "startups_and_vc", "data_science",
+    "surveillance_and_privacy",
     # Science
     "neuroscience", "physics", "biology", "medicine",
     "astronomy", "climate_and_environment",
+    "mathematics", "planetary_science", "paleontology",
     # Business
     "entrepreneurship", "investing", "marketing",
     "leadership", "economics", "productivity",
     # History
     "ancient_history", "modern_history", "military_history",
     "political_history", "cultural_history",
+    "mythology",
     # True Crime
     "cybercrime", "true_crime",
     # Health
@@ -46,7 +49,7 @@ TopicLiteral = Literal[
     "relationships", "personal_finance", "career", "habits_and_mindset",
     # Culture
     "politics", "media_and_journalism", "social_issues",
-    "sports", "arts_and_entertainment",
+    "sports", "arts_and_entertainment", "political_commentary",
 ]
 
 DifficultyLiteral = Literal["beginner", "intermediate", "advanced"]
@@ -62,7 +65,7 @@ LabelerConfidenceLiteral = Literal["high", "medium", "low"]
 
 LabelerLiteral = Literal["human", "llm"]
 
-SCHEMA_VERSION = 0  # Increment to 1 when ontology is frozen post-pilot
+SCHEMA_VERSION = 1  # Frozen post-pilot; added mathematics, planetary_science, paleontology, mythology, surveillance_and_privacy, political_commentary
 
 
 # ---------------------------------------------------------------------------
