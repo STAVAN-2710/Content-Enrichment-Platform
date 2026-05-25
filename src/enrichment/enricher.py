@@ -9,7 +9,7 @@ correction message, and retries (up to max_retries times in client.py).
 import time
 from datetime import datetime, timezone
 
-from src.enrichment.client import get_enrichment_client
+from src.enrichment.client import MAX_RETRIES, get_enrichment_client
 from src.enrichment.prompts.v1 import PROMPT_VERSION, build_user_prompt
 from src.schemas.enrichment import SCHEMA_VERSION, EpisodeEnrichment
 from src.schemas.episode import PodcastEpisode
@@ -43,6 +43,7 @@ def enrich_episode(
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": user_prompt}],
         response_model=EpisodeEnrichment,
+        max_retries=MAX_RETRIES,
     )
 
     elapsed_ms = (time.perf_counter() - start) * 1000
