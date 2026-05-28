@@ -1,7 +1,7 @@
 """
 Hallucination detection — two complementary checks:
 
-1. LLM-as-Judge: sends (source_text, generated_summary) to Claude and asks
+1. LLM-as-Judge: sends (source_text, generated_summary) to the LLM and asks
    whether the summary makes claims unsupported by the source. Returns a
    structured verdict with a reasoning string.
 
@@ -12,11 +12,11 @@ Hallucination detection — two complementary checks:
 import os
 import re
 
-import anthropic
+import openai
 
 from src.evaluation.metrics import normalize_entity
 
-_JUDGE_MODEL = "claude-haiku-4-5-20251001"  # cheap model for judge calls
+_JUDGE_MODEL = "gpt-4o-mini"  # cheap model for judge calls
 
 _JUDGE_SYSTEM = """You are a factual consistency evaluator for a podcast enrichment system.
 
@@ -36,24 +36,28 @@ minor: claim could be inferred but is not explicit in source
 major: claim directly contradicts source or invents a specific fact (name, date, number)
 """
 
+_DEFAULT_BASE_URL = "https://api.z.ai/api/v1"
 
-def _get_anthropic_client() -> anthropic.Anthropic:
-    api_key = (
-        os.environ.get("ANTHROPIC_API_KEY")
-        or os.environ.get("ZAI_API_KEY")
-        or os.environ.get("Z_AI_API_KEY")
-    )
-    if not api_key:
-        raise EnvironmentError("Set ANTHROPIC_API_KEY or Z_AI_API_KEY")
-    return anthropic.Anthropic(api_key=api_key)
+
+def _get_openai_client() -> openai.OpenAI:
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if openai_key:
+        return openai.OpenAI(api_key=openai_key)
+
+    zai_key = os.environ.get("ZAI_API_KEY") or os.environ.get("Z_AI_API_KEY")
+    if zai_key:
+        base_url = os.environ.get("ZAI_BASE_URL", _DEFAULT_BASE_URL)
+        return openai.OpenAI(api_key=zai_key, base_url=base_url)
+
+    raise EnvironmentError("Set OPENAI_API_KEY or ZAI_API_KEY in environment")
 
 
 def llm_judge_hallucination(
     source_text: str,
     generated_summary: str,
-    client: anthropic.Anthropic | None = None,
+    client: openai.OpenAI | None = None,
 ) -> dict:
-    """Call Claude Haiku to judge factual consistency.
+    """Call LLM to judge factual consistency.
 
     Returns dict with keys: is_hallucination (bool), reasoning (str), severity (str).
     Falls back to {'is_hallucination': None, 'error': ...} on API failure.
@@ -61,7 +65,7 @@ def llm_judge_hallucination(
     import json
 
     if client is None:
-        client = _get_anthropic_client()
+        client = _get_openai_client()
 
     user_msg = (
         f"SOURCE TEXT:\n{source_text[:3000]}\n\n"
@@ -70,13 +74,15 @@ def llm_judge_hallucination(
     )
 
     try:
-        response = client.messages.create(
+        response = client.chat.completions.create(
             model=_JUDGE_MODEL,
             max_tokens=256,
-            system=_JUDGE_SYSTEM,
-            messages=[{"role": "user", "content": user_msg}],
+            messages=[
+                {"role": "system", "content": _JUDGE_SYSTEM},
+                {"role": "user", "content": user_msg},
+            ],
         )
-        raw = response.content[0].text.strip()
+        raw = response.choices[0].message.content.strip()
         # Extract JSON from response (model sometimes adds prose)
         m = re.search(r"\{.*\}", raw, re.DOTALL)
         if m:
@@ -123,7 +129,7 @@ def batch_hallucination_check(
     records: list[dict],
     source_texts: dict[str, str],
     run_llm_judge: bool = True,
-    client: anthropic.Anthropic | None = None,
+    client: openai.OpenAI | None = None,
 ) -> dict:
     """Run hallucination checks on a batch of enrichment records.
 
@@ -135,7 +141,7 @@ def batch_hallucination_check(
     Returns aggregate stats + per-episode detail.
     """
     if client is None and run_llm_judge:
-        client = _get_anthropic_client()
+        client = _get_openai_client()
 
     per_episode = []
     entity_rates = []

@@ -1,29 +1,37 @@
 """
-Instructor-wrapped Anthropic client for structured enrichment output.
+Instructor-wrapped OpenAI client for structured enrichment output.
+
+Prefers OPENAI_API_KEY (api.openai.com). Falls back to ZAI_API_KEY with custom base_url.
+Instructor wraps it for Pydantic schema enforcement + auto-retry on validation failure.
 """
 import os
 
-import anthropic
 import instructor
+import openai
 
-_DEFAULT_MODEL = "claude-sonnet-4-6"
-MAX_RETRIES = 3  # validation retries passed to messages.create()
+# gpt-4o-mini: best cost/quality for structured extraction tasks
+_DEFAULT_MODEL = os.environ.get("LLM_MODEL", "gpt-4o-mini")
+_ZAI_BASE_URL = "https://api.z.ai/api/v1"
+MAX_RETRIES = 3  # validation retries passed to chat.completions.create()
 
 
-def get_enrichment_client(model: str = _DEFAULT_MODEL) -> tuple[instructor.Instructor, str]:
+def get_enrichment_client(model: str | None = None) -> tuple[instructor.Instructor, str]:
     """Return (instructor_client, model_name).
 
-    max_retries is passed at call time (not here) to avoid a kwarg conflict
-    between instructor's validation retries and Anthropic's HTTP retries.
+    Uses OPENAI_API_KEY → api.openai.com by default.
+    Falls back to ZAI_API_KEY → ZAI_BASE_URL if OPENAI_API_KEY not set.
     """
-    api_key = (
-        os.environ.get("ANTHROPIC_API_KEY")
-        or os.environ.get("ZAI_API_KEY")
-        or os.environ.get("Z_AI_API_KEY")
-    )
-    if not api_key:
-        raise EnvironmentError("Set ANTHROPIC_API_KEY or ZAI_API_KEY in environment")
+    resolved_model = model or _DEFAULT_MODEL
 
-    raw_client = anthropic.Anthropic(api_key=api_key)
-    client = instructor.from_anthropic(raw_client)
-    return client, model
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if openai_key:
+        raw_client = openai.OpenAI(api_key=openai_key)
+        return instructor.from_openai(raw_client), resolved_model
+
+    zai_key = os.environ.get("ZAI_API_KEY") or os.environ.get("Z_AI_API_KEY")
+    if zai_key:
+        base_url = os.environ.get("ZAI_BASE_URL", _ZAI_BASE_URL)
+        raw_client = openai.OpenAI(api_key=zai_key, base_url=base_url)
+        return instructor.from_openai(raw_client), resolved_model
+
+    raise EnvironmentError("Set OPENAI_API_KEY or ZAI_API_KEY in environment")

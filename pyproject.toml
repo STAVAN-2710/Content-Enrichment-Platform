@@ -9,6 +9,7 @@ dependencies = [
     "apache-beam[gcp]>=2.55.0",
     # LLM + structured output
     "anthropic>=0.40.0",
+    "openai>=1.30.0",
     "instructor>=1.6.0",
     # Data schemas
     "pydantic>=2.0.0",
