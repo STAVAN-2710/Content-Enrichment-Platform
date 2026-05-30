@@ -18,6 +18,9 @@ from src.schemas.episode import PodcastEpisode
 _PROMPT_MODULES = {
     "v1": "src.enrichment.prompts.v1",
     "v2": "src.enrichment.prompts.v2",
+    "v3": "src.enrichment.prompts.v3",
+    "v4": "src.enrichment.prompts.v4",
+    "v5": "src.enrichment.prompts.v5",
 }
 _DEFAULT_PROMPT_VERSION = os.environ.get("PROMPT_VERSION", "v2")
 
