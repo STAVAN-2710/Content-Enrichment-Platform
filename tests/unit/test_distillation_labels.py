@@ -36,3 +36,19 @@ def test_unknown_label_raises():
     enc = LabelEncoders()
     with pytest.raises(ValueError):
         enc.encode_single("mood", "nonexistent_mood")
+
+def test_encode_multi_unknown_label_raises():
+    enc = LabelEncoders()
+    with pytest.raises(ValueError):
+        enc.encode_multi("primary_topics", ["artificial_intelligence", "not_a_real_topic"])
+
+def test_decode_multi_threshold():
+    enc = LabelEncoders()
+    # Values exactly at threshold should be included, below should not
+    vec = enc.encode_multi("best_listening_context", ["commute", "workout"])
+    # Default threshold 0.5: both active labels returned
+    result = enc.decode_multi("best_listening_context", vec)
+    assert set(result) == {"commute", "workout"}
+    # Threshold 1.1: nothing passes → empty
+    result_high = enc.decode_multi("best_listening_context", vec, threshold=1.1)
+    assert result_high == []
