@@ -44,6 +44,7 @@ class Checkpointer:
 
     def _init_db(self) -> None:
         with self._conn() as conn:
+            conn.execute("PRAGMA journal_mode=WAL")
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS episode_status (
                     episode_id     TEXT PRIMARY KEY,

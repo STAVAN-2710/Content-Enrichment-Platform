@@ -36,6 +36,7 @@ def enrich_episode(
     episode: PodcastEpisode,
     prompt_version: str | None = None,
     entity_hints: list[str] | None = None,
+    client=None,
 ) -> EpisodeEnrichment:
     """Enrich a single episode via LLM + Instructor.
 
@@ -47,7 +48,11 @@ def enrich_episode(
     SYSTEM_PROMPT = prompt_module.SYSTEM_PROMPT
     build_user_prompt = prompt_module.build_user_prompt
 
-    client, model = get_enrichment_client()
+    if client is None:
+        client, model = get_enrichment_client()
+    else:
+        from src.enrichment.client import _DEFAULT_MODEL
+        model = os.environ.get("LLM_MODEL", _DEFAULT_MODEL)
 
     user_prompt = build_user_prompt(
         show_name=episode.show_name,

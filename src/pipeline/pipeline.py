@@ -12,6 +12,7 @@ only the runner configuration changes. The chunked runner in runner.py handles
 DirectRunner's memory limit for local development.
 """
 import json
+import os
 import traceback
 from pathlib import Path
 from typing import Any
@@ -20,10 +21,11 @@ import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
 
 from src.enrichment.enricher import enrich_episode
-from src.enrichment.prompts.v1 import PROMPT_VERSION
 from src.pipeline.checkpointer import Checkpointer
 from src.schemas.enrichment import SCHEMA_VERSION, EpisodeEnrichment
 from src.schemas.episode import PodcastEpisode
+
+PROMPT_VERSION = os.environ.get("PROMPT_VERSION", "v2")
 
 _ENRICHED_TAG = "enriched"
 _FAILED_TAG = "failed"
@@ -163,7 +165,7 @@ def build_pipeline(
     enrich_results = (
         episodes
         | "BatchEpisodes" >> beam.BatchElements(
-            min_batch_size=1, target_batch_overhead=0.05, target_batch_size=batch_size
+            min_batch_size=1, target_batch_overhead=0.05, max_batch_size=batch_size
         )
         | "EnrichBatch" >> beam.ParDo(
             _EnrichDoFn(checkpointer)
