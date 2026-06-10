@@ -19,6 +19,25 @@ from src.distillation.model import PodcastClassifier
 
 _enc = LabelEncoders()
 
+
+def _compute_pos_weights(records: list[dict], device: torch.device) -> dict[str, torch.Tensor]:
+    """Compute per-class pos_weight = neg_count/pos_count for each multi-label field.
+
+    Without this, BCE loss on 50-class topic labels (1-3 positives per sample)
+    causes the model to learn "predict all zeros" — minimizing loss via class imbalance.
+    """
+    weights = {}
+    for field in MULTI_LABEL_FIELDS:
+        n_classes = _enc.vocab_size(field)
+        pos_counts = np.zeros(n_classes, dtype=np.float32)
+        for r in records:
+            pos_counts += _enc.encode_multi(field, r[field])
+        neg_counts = len(records) - pos_counts
+        # Clamp: any class with zero positives gets weight 1.0 (neutral) rather than inf
+        pos_counts = np.maximum(pos_counts, 1.0)
+        weights[field] = torch.tensor(neg_counts / pos_counts, dtype=torch.float32).to(device)
+    return weights
+
 MAX_LENGTH = 256
 
 
@@ -52,14 +71,21 @@ class EpisodeDataset(Dataset):
         return item
 
 
-def _compute_loss(logits: dict, batch: dict, device: torch.device) -> torch.Tensor:
+def _compute_loss(
+    logits: dict,
+    batch: dict,
+    device: torch.device,
+    pos_weights: dict[str, torch.Tensor],
+) -> torch.Tensor:
     loss = torch.tensor(0.0, device=device)
     for field in SINGLE_LABEL_FIELDS:
         targets = batch[f"label_{field}"].to(device)
         loss = loss + F.cross_entropy(logits[field], targets)
     for field in MULTI_LABEL_FIELDS:
         targets = batch[f"label_{field}"].to(device)
-        loss = loss + F.binary_cross_entropy_with_logits(logits[field], targets)
+        loss = loss + F.binary_cross_entropy_with_logits(
+            logits[field], targets, pos_weight=pos_weights[field]
+        )
     return loss
 
 
@@ -90,6 +116,11 @@ def train_one_run(
     test_loader = DataLoader(test_ds, batch_size=batch_size)
 
     model = PodcastClassifier(model_name).to(device)
+    if device.type == "mps":
+        model = model.float()
+
+    pos_weights = _compute_pos_weights(train_records, device)
+
     optimizer = AdamW(model.parameters(), lr=lr, weight_decay=0.01)
     total_steps = len(train_loader) * epochs
     warmup_steps = int(total_steps * warmup_ratio)
@@ -105,7 +136,7 @@ def train_one_run(
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             logits = model(input_ids, attention_mask)
-            loss = _compute_loss(logits, batch, device)
+            loss = _compute_loss(logits, batch, device, pos_weights)
             optimizer.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)

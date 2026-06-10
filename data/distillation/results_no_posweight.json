@@ -1,0 +1,70 @@
+{
+  "distilbert": {
+    "150": {
+      "mood": 0.13499964974957096,
+      "difficulty": 0.6162636374815023,
+      "format": 0.15171968859106974,
+      "primary_topics": 0.02499864253982585,
+      "secondary_topics": 0.009568602972201712,
+      "best_listening_context": 0.224489919697227
+    },
+    "300": {
+      "mood": 0.16011102843737046,
+      "difficulty": 0.7073256783629482,
+      "format": 0.26676534811455443,
+      "primary_topics": 0.004344959024204307,
+      "secondary_topics": 0.0033044526884345353,
+      "best_listening_context": 0.247570994581673
+    },
+    "600": {
+      "mood": 0.2696600410091444,
+      "difficulty": 0.7597539880837978,
+      "format": 0.39110291510541667,
+      "primary_topics": 0.0016666666666666666,
+      "secondary_topics": 0.0,
+      "best_listening_context": 0.2902151572533738
+    },
+    "900": {
+      "mood": 0.29503550024812003,
+      "difficulty": 0.7839446898405993,
+      "format": 0.3950840600453979,
+      "primary_topics": 0.0,
+      "secondary_topics": 0.0,
+      "best_listening_context": 0.30207471470847713
+    }
+  },
+  "deberta": {
+    "150": {
+      "mood": 0.10582897418895355,
+      "difficulty": 0.5906845448129852,
+      "format": 0.12883435582822086,
+      "primary_topics": 0.023019932143904298,
+      "secondary_topics": 0.006672363936666575,
+      "best_listening_context": 0.1216439008334411
+    },
+    "300": {
+      "mood": 0.16505545563549162,
+      "difficulty": 0.7392950538255443,
+      "format": 0.18180186473401827,
+      "primary_topics": 0.01732285365171606,
+      "secondary_topics": 0.007639127551325125,
+      "best_listening_context": 0.23126575893681472
+    },
+    "600": {
+      "mood": 0.2689666448659254,
+      "difficulty": 0.7819921517174618,
+      "format": 0.31018785103175395,
+      "primary_topics": 0.006190654205607477,
+      "secondary_topics": 0.0,
+      "best_listening_context": 0.29385708319038173
+    },
+    "900": {
+      "mood": 0.29425864055923107,
+      "difficulty": 0.7856218369203274,
+      "format": 0.3848027849870192,
+      "primary_topics": 0.0,
+      "secondary_topics": 0.0,
+      "best_listening_context": 0.307976848310407
+    }
+  }
+}

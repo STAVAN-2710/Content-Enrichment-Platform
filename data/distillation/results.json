@@ -1,0 +1,70 @@
+{
+  "distilbert": {
+    "150": {
+      "mood": 0.13332209310368678,
+      "difficulty": 0.6155883207189352,
+      "format": 0.128992628992629,
+      "primary_topics": 0.03734472051066401,
+      "secondary_topics": 0.01956003176851363,
+      "best_listening_context": 0.1613783377748374
+    },
+    "300": {
+      "mood": 0.16470533639651286,
+      "difficulty": 0.7050076457202028,
+      "format": 0.22542551787834808,
+      "primary_topics": 0.05064444609819137,
+      "secondary_topics": 0.026992738404046538,
+      "best_listening_context": 0.28138577177577817
+    },
+    "600": {
+      "mood": 0.2652896898267921,
+      "difficulty": 0.7578362973369999,
+      "format": 0.36455374166217536,
+      "primary_topics": 0.0698618987274557,
+      "secondary_topics": 0.02930871646574653,
+      "best_listening_context": 0.32940824678890435
+    },
+    "900": {
+      "mood": 0.30011685791549025,
+      "difficulty": 0.7739918637070935,
+      "format": 0.3845351330574433,
+      "primary_topics": 0.08754606943261777,
+      "secondary_topics": 0.032858279349424556,
+      "best_listening_context": 0.363370533009869
+    }
+  },
+  "deberta": {
+    "150": {
+      "mood": 0.123565944731619,
+      "difficulty": 0.4935097532989099,
+      "format": 0.12883435582822086,
+      "primary_topics": 0.03390477087493693,
+      "secondary_topics": 0.008444189377766774,
+      "best_listening_context": 0.1988188626921843
+    },
+    "300": {
+      "mood": 0.1630245923549853,
+      "difficulty": 0.7199596741930838,
+      "format": 0.12883435582822086,
+      "primary_topics": 0.052486032118868986,
+      "secondary_topics": 0.016769816921703068,
+      "best_listening_context": 0.3111616155984336
+    },
+    "600": {
+      "mood": 0.17033732924449402,
+      "difficulty": 0.7699917197019093,
+      "format": 0.24453386746545883,
+      "primary_topics": 0.07399895374354157,
+      "secondary_topics": 0.025250319059718054,
+      "best_listening_context": 0.32085368070842457
+    },
+    "900": {
+      "mood": 0.24845553776458645,
+      "difficulty": 0.7858963738449409,
+      "format": 0.35017003437877947,
+      "primary_topics": 0.0826003853983008,
+      "secondary_topics": 0.027923888648829002,
+      "best_listening_context": 0.35968345357599707
+    }
+  }
+}
